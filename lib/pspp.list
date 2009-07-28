@@ -1,0 +1,66 @@
+
+
+                                                           28 Jul 2009 - Page 1
+                                             GNU pspp 0.6.1 - i486-pc-linux-gnu
+
+1.1 DATA LIST.  Reading free-form data from "/tmp/1tKDhAUmm6.csv".
++--------+------+
+|VVaarriiaabbllee|FFoorrmmaatt|
+#========#======#
+|make    |A15   |
+|mpg     |F8.0  |
+|weight  |F8.0  |
+|price   |F8.0  |
++--------+------+
+
+           make      mpg   weight    price
+--------------- -------- -------- --------
+AMC Concord        22.00  2930.00  4099.00 
+AMC Pacer          17.00  3350.00  4749.00 
+AMC Spirit         22.00  2640.00  3799.00 
+Buick Century      20.00  3250.00  4816.00 
+Buick Electra      15.00  4080.00  7827.00 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
