@@ -1,5 +1,6 @@
 package PSPP;
 
+use 5.005;
 use warnings;
 use strict;
 use IPC::Run qw( run timeout );
@@ -49,45 +50,34 @@ sub new {
     }, $class;
 }
 
-sub variables {
-    my $self = shift;
-    my $variables = shift;
-    if ($variables) {
-        $self->{variables} = $variables;
-    }
-    return $self->{variables};
-}
-
-sub rows {
-    my $self = shift;
-    my $rows = shift;
-    if ($rows) {
-        $self->{rows} = $rows;
-    }
-    return $self->{rows};
-}
-
 sub save {
     my $self      = shift;
     my %opts      = @_;
     my $outfile   = $opts{outfile} || 'out.sav';
-    my $variables = $self->{variables} or croak "You must set the variables property before attempting to save data";
-    my $rows      = $self->{rows} or croak "You must set the rows property before attempting to save data";
-    
-    print "Variables:\n$variables\n\n" if $self->verbose;
-
-    # Use CSV_XS to write data to tmp file
-    my $csv = Text::CSV_XS->new( { binary => 1 } );
-    my $fh = File::Temp->new( SUFFIX => '.csv' );
-    for my $row (@$rows) {
-        $csv->print( $fh, $row );
-        print $fh "\n";
+    my $variables = $opts{variables} or croak "Mandatory param: variables not supplied";
+    my $rows      = $opts{rows};
+    my $infile    = $opts{infile};
+    if ( !$rows && !$infile ) {
+        croak "You must specify either an infile or a rows arrayref";
     }
-    $fh->close;
+
+    my $fh;    # in outer scope so that tmp file doesn't disappear to early
+    if ( !$infile ) {
+
+        # Infile not provided, so use CSV_XS to turn $rows into tmp infile
+        my $csv = Text::CSV_XS->new( { binary => 1 } );
+        $fh = File::Temp->new( SUFFIX => '.csv' );
+        for my $row (@$rows) {
+            $csv->print( $fh, $row );
+            print $fh "\n";
+        }
+        $fh->close;
+        $infile = $fh->filename;
+    }
 
     # Generate PSPP program
     my $syntax = <<END_SYNTAX;
-DATA LIST LIST FILE="$fh"
+DATA LIST LIST FILE="$infile"
  / $variables .
 LIST.
 SAVE OUTFILE="$outfile".
@@ -97,28 +87,39 @@ END_SYNTAX
 
     # Use IPC::Run to call PSPP binary
     my $pspp_binary = $self->{pspp_binary};
-    run [$pspp_binary], \$syntax, \(my $out), \(my $err), timeout( $self->{timeout} ) or croak "$pspp_binary: $?";
+    run [$pspp_binary], \$syntax, \( my $out ), \( my $err ), timeout( $self->{timeout} )
+        or croak "$pspp_binary: $?";
     carp $err if $err;
     print "Output:\n$out\n" if $self->verbose;
-    undef $fh;
+    undef $infile;
     return -e $outfile;
 }
 
 sub verbose { return $_[0]->{verbose} }
 
 ########## TEST #################
+my $outfile1 = 'test1.sav';
+my $outfile2 = 'test2.sav';
+unlink $outfile1;
+unlink $outfile2;
 my $pspp = PSPP->new( verbose => 0 );
-$pspp->variables('make (A15) mpg weight price');
-$pspp->rows([
-            [ "AMC Concord",   22, 2930, 4099 ],
-            [ "AMC Pacer",     17, 3350, 4749 ],
-            [ "AMC Spirit",    22, 2640, 3799 ],
-            [ "Buick Century", 20, 3250, 4816 ],
-            [ "Buick Electra", 15, 4080, 7827 ],
-        ]);
-my $outfile = '/home/patspam/Desktop/out.sav';
-unlink $outfile;
-$pspp->save(outfile => $outfile) or warn "An error occurred";
+$pspp->save(
+    variables => 'make (A15) mpg weight price',
+    rows      => [
+        [ "AMC Concord",   22, 2930, 4099 ],
+        [ "AMC Pacer",     17, 3350, 4749 ],
+        [ "AMC Spirit",    22, 2640, 3799 ],
+        [ "Buick Century", 20, 3250, 4816 ],
+        [ "Buick Electra", 15, 4080, 7827 ],
+    ],
+    outfile => $outfile1,
+) or warn "An error occurred";
+
+$pspp->save(
+    variables => 'make (A15) mpg weight price',
+    infile    => 'test.csv',
+    outfile   => $outfile2,
+) or warn "An error occurred";
 print "Finished\n";
 
 =head1 AUTHOR

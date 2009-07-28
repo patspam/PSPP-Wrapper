@@ -1,5 +1,0 @@
-DATA LIST LIST FILE="/tmp/1tKDhAUmm6.csv"
- / make (A15) mpg weight price .
-LIST.
-SAVE OUTFILE="/home/patspam/Desktop/out.sav".
-
