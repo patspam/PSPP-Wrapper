@@ -21,6 +21,8 @@ PSPP is particularly aimed at statisticians, social scientists and students requ
 
 For more information, see L<http://www.gnu.org/software/pspp/>
 
+You need to install the PSPP binary to use this module.
+
 This module currently only contains one useful method, L<save>, which makes it easy to generate PSPP/SPSS-compatible .sav files.
 
 =head1 VERSION

@@ -8,7 +8,8 @@ For more information, see http://www.gnu.org/software/pspp
 
 INSTALLATION
 
-To install this module, run the following commands:
+To install this module, you first need to install PSPP and make sure it is in your path. 
+After you have done that, run the following commands:
 
 	perl Makefile.PL
 	make
