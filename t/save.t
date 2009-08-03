@@ -3,14 +3,14 @@ use File::Temp;
 use File::Spec;
 
 BEGIN {
-    use_ok('PSPP');
+    use_ok('PSPP::Wrapper');
 }
 
 # Generate output files to tmp dir
 my $tmpdir = File::Temp->newdir();
 my $outfile1 = File::Spec->catfile( $tmpdir, 'test1.sav');
 my $outfile2 = File::Spec->catfile( $tmpdir, 'test2.sav');
-my $pspp     = PSPP->new( verbose => 0 );
+my $pspp     = PSPP::Wrapper->new( verbose => 0 );
 my $rows     = [
     [ "AMC Concord",   22, 2930, 4099 ],
     [ "AMC Pacer",     17, 3350, 4749 ],

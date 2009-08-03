@@ -1,4 +1,4 @@
-package PSPP;
+package PSPP::Wrapper;
 
 use 5.005;
 use warnings;
@@ -11,7 +11,7 @@ use Carp;
 
 =head1 NAME
 
-PSPP - Perl library for interacting with PSPP
+PSPP::Wrapper - Wrapper for the pspp command-line interface
 
 =head2 DESCRIPTION
 
@@ -36,7 +36,7 @@ our $VERSION = '0.01';
 =head1 SYNOPSIS
 
     # Generate a SPSS-compatible .sav file from an array of data
-    my $pspp     = PSPP->new( verbose => 0 );
+    my $pspp     = PSPP::Wrapper->new( verbose => 0 );
     my $rows     = [
         [ "AMC Concord",   22, 2930, 4099 ],
         [ "AMC Pacer",     17, 3350, 4749 ],
@@ -68,19 +68,21 @@ our $VERSION = '0.01';
 
 =head2 new
 
-Constructor.
+Constructor. Acceptions the following options:
 
-=head3 Options
+=over 4
 
-=head4 verbose
+=item verbose
 
-=head4 timeout
+=item timeout
 
 The L<IPC::Run::run> timeout value
 
-=head4 pspp_binary
+=item pspp_binary
 
 The location of the C<pspp> binary. Defaults to C<pspp>.
+
+=back
 
 =cut
 
@@ -99,25 +101,27 @@ sub new {
 
 Generate a PSPP (and hence SPSS) compatible .sav file
 
-You must specify either C<rows> or C<infile>.
+You must specify either C<rows> or C<infile>. Accepts the following options:
 
-=head3 Options
+=over 4
 
-=head4 outfile
+=item outfile
 
 The name of the file to generate (defaults to out.sav)
 
-=head4 variables
+=item variables
 
 The PSPP/SPSS variables definition
 
-=head4 rows
+=item rows
 
 An array reference of rows to include in the data (optional)
 
-=head4 infile
+=item infile
 
 A data-file to read from (optional)
+
+=back
 
 =cut
 
@@ -188,7 +192,7 @@ Patrick Donelan, C<< <pdonelan at cpan.org> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-pspp at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=PSPP>.  I will be notified, and then you'll
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=PSPP::Wrapper>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 
@@ -196,7 +200,7 @@ automatically be notified of progress on your bug as I make changes.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc PSPP
+    perldoc PSPP::Wrapper
 
 
 You can also look for information at:
@@ -205,22 +209,26 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=PSPP>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=PSPP::Wrapper>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/PSPP>
+L<http://annocpan.org/dist/PSPP::Wrapper>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/PSPP>
+L<http://cpanratings.perl.org/d/PSPP::Wrapper>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/PSPP/>
+L<http://search.cpan.org/dist/PSPP::Wrapper/>
 
 =back
 
+=head1 SEE ALSO
+
+For a module that actually groks PSPP (rather than just wrapping it) and hence allows you to read/write 
+PSPP and/or SPSS native files, see: L<PSPP>
 
 =head1 ACKNOWLEDGEMENTS
 
@@ -235,4 +243,4 @@ under the same terms as Perl itself.
 
 =cut
 
-1;    # End of PSPP
+1;

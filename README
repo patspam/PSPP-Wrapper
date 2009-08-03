@@ -1,10 +1,14 @@
-PSPP - Perl library for interacting with PSPP
+PSPP::Wrapper - Wrapper for the pspp command-line interface
 
 PSPP is a program for statistical analysis of sampled data. 
 It is a Free replacement for the proprietary program SPSS, and appears very similar to it with a few exceptions.
 PSPP is particularly aimed at statisticians, social scientists and students requiring fast convenient analysis of sampled data.
 
 For more information, see http://www.gnu.org/software/pspp
+
+Please note, this module is just a simple wrapper around the pspp command-line infterface. 
+For a module that actually groks PSPP and hence allows you to read/write 
+PSPP and/or SPSS native files, see the PSPP module on CPAN.
 
 INSTALLATION
 

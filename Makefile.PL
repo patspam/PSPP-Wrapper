@@ -1,7 +1,7 @@
 use inc::Module::Install;
 
-name     'PSPP';
-all_from 'lib/PSPP.pm';
+name     'PSPP-Wrapper';
+all_from 'lib/PSPP/Wrapper.pm';
 
 requires 'IPC::Run';
 requires 'Text::CSV_XS';
